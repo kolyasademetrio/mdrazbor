@@ -1,0 +1,83 @@
+.main-text-wrapper p {
+    margin-bottom: 15px;
+}
+
+.btn__inner_in {
+    margin-top: 40px;
+}
+
+.btn__inner_in {
+    margin-top: 0;
+    padding: 4px;
+    border-radius: 25px;
+    background: #fff;
+    text-transform: uppercase;
+    display: block;
+    position: relative;
+    text-align: center;
+    color: #1b1b1b;
+    display: block;
+    max-width: 270px;
+    width: 100%;
+    font-size: 18px;
+    font-weight: 500;
+    border: 0 none;
+    outline: none;
+}
+
+.btn__inner_in:after {
+    content: url(../../img/btn-arrow-bl.png);
+    display: inline-block;
+    width: 8px;
+    height: 19px;
+    position: relative;
+    top: 2px;
+    margin-left: 10px;
+}
+
+.wpcf7-response-output {
+    background-color: #fff !important;
+}
+
+div.wpcf7-mail-sent-ok {
+    border-color: #00adef !important;
+}
+
+.checkbox-wrapper .wpcf7-list-item {
+    margin: 0 !important;
+}
+/* checkbox with label CF7 */
+.vacancy-form-submit-wrapper label:before {
+    display: none !important;
+}
+
+.vacancy-form-submit-wrapper input[type="checkbox"]:checked + label:before {
+    display: none !important;
+}
+
+.vacancy-form-submit-wrapper label:after {
+    content: "";
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 4px;
+    border-radius: 2px;
+    width: 16px;
+    height: 15px;
+    border: 2px solid rgba(255, 255, 255, .8);
+}
+
+.vacancy-form-submit-wrapper label.checked:after {
+    content: url(../../img/check.png);
+    top: 3px;
+    border: 0 none;
+}
+/* checkbox with label CF7 End */
+
+.p0 {
+    padding: 0 !important;
+}
+
+.navigation.pagination h2 {
+    display: none !important;
+}

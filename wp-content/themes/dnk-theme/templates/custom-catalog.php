@@ -21,33 +21,10 @@ if ( function_exists( 'pll_current_language' ) ) {
     </ul>
 </div>
 <section class="main-slider-block">
-    <div class="wrapper">
+    <div class="wrapper cataloge-page">
         <div class="main-slider-wrapper">
-            <aside class="left-menu">
-                <ul class="left-menu-list ">
-                    <li class="left-menu-list__item">
-                        <select class="styled">
-                            <option>Выберите марку</option>
-                            <option>Выберите деталь</option>
-                        </select>
-                    </li>
 
-                    <li class="left-menu-list__item">
-                        <select class="styled">
-                            <option>Алматы</option>
-                            <option>Еще что-то</option>
-                        </select>
-                    </li>
-                </ul>
-
-                <a href="" class="btn blue__btn">
-                    <div class="btn__inner">перейти к каталогу</div>
-                </a>
-
-
-                <?php $form_1 = get_field('form_1', 'option') ?>
-                <?php echo do_shortcode( $form_1 ) ?>
-            </aside>
+            <?php get_template_part( 'templates/custom','sidebar'); ?>
 
             <div class="right-wrapper">
                 <?php
@@ -74,85 +51,65 @@ if ( function_exists( 'pll_current_language' ) ) {
                     </div>
 
                 </form>
-                <div class="main-cataloge ">
-                    <a href="" class="cataloge-item">
-                        <div class="cataloge-item__img" style="background: url(img/pic_1.png) no-repeat 50% 50%;">
-                        </div>
-                        <div class="cataloge-item__name">Mercedes-Benz 100</div>
-                        <div class="cataloge-item__age"><span>1988</span> — <span>1996</span> гг.</div>
-                        <div class="cataloge-item__parts">в наличии <span>85</span> з/ч</div>
-                    </a>
 
-                    <a href="" class="cataloge-item">
-                        <div class="cataloge-item__img" style="background: url(img/pic_2.png) no-repeat 50% 50%;">
-                        </div>
-                        <div class="cataloge-item__name">Mercedes-Benz 100</div>
-                        <div class="cataloge-item__age"><span>1988</span> — <span>1996</span> гг.</div>
-                        <div class="cataloge-item__parts">в наличии <span>85</span> з/ч</div>
-                    </a>
 
-                    <a href="" class="cataloge-item">
-                        <div class="cataloge-item__img" style="background: url(img/pic_3.png) no-repeat 50% 50%;">
-                        </div>
-                        <div class="cataloge-item__name">Mercedes-Benz 100</div>
-                        <div class="cataloge-item__age"><span>1988</span> — <span>1996</span> гг.</div>
-                        <div class="cataloge-item__parts">в наличии <span>85</span> з/ч</div>
-                    </a>
+                <?php
+                global $wp_query;
+                $args = array(
+                    'post_type' => 'products',
+                    'posts_per_page' => 9,
+                    'paged' => get_query_var('paged') ?: 1,
+                );
+                $wp_query  = new WP_Query( $args );
 
-                    <a href="" class="cataloge-item">
-                        <div class="cataloge-item__img" style="background: url(img/pic_4.png) no-repeat 50% 50%;">
-                        </div>
-                        <div class="cataloge-item__name">Mercedes-Benz 100</div>
-                        <div class="cataloge-item__age"><span>1988</span> — <span>1996</span> гг.</div>
-                        <div class="cataloge-item__parts">в наличии <span>85</span> з/ч</div>
-                    </a>
+                if ( $wp_query ->have_posts() ) {
+                    ?>
+                    <div class="main-cataloge ">
+                        <?php
+                        while ( $wp_query->have_posts() ) {
+                            $wp_query->the_post();
+                            ?>
+                            <a href="<?php echo $url = get_post_permalink(get_the_ID()); ?>" class="cataloge-item">
+                                <div class="cataloge-item__img" style="background: url(<?php echo get_field('model_img', get_the_ID()); ?>) no-repeat 50% 50%;">
+                                </div>
+                                <div class="cataloge-item__name">
+                                    <?php the_title(); ?>
+                                </div>
+                                <div class="cataloge-item__age">
+                                    <?php $categories = wp_get_post_categories(get_the_ID(), array('fields' => 'names')); ?>
+                                    <?php if ( !empty($categories) ) : ?>
+                                        <?php
+                                            $result = array();
+                                            foreach ( $categories as $category ) {
+                                                $result[] = '<span>'.$category .'</span> г.';
+                                            }
+                                            $result = implode( ', ', $result );
+                                            echo $result;
+                                        ?>
+                                    <?php endif; ?>
+                                </div>
+                                <div class="cataloge-item__parts">в наличии <span>85</span> з/ч</div>
+                            </a>
+                        <?php
+                        }
+                        wp_reset_postdata();
+                        ?>
+                    </div>
+                    <?php
+                }
+                ?>
 
-                    <a href="" class="cataloge-item">
-                        <div class="cataloge-item__img" style="background: url(img/pic_1.png) no-repeat 50% 50%;">
-                        </div>
-                        <div class="cataloge-item__name">Mercedes-Benz 100</div>
-                        <div class="cataloge-item__age"><span>1988</span> — <span>1996</span> гг.</div>
-                        <div class="cataloge-item__parts">в наличии <span>85</span> з/ч</div>
-                    </a>
-
-                    <a href="" class="cataloge-item">
-                        <div class="cataloge-item__img" style="background: url(img/pic_2.png) no-repeat 50% 50%;">
-                        </div>
-                        <div class="cataloge-item__name">Mercedes-Benz 100</div>
-                        <div class="cataloge-item__age"><span>1988</span> — <span>1996</span> гг.</div>
-                        <div class="cataloge-item__parts">в наличии <span>85</span> з/ч</div>
-                    </a>
-
-                    <a href="" class="cataloge-item">
-                        <div class="cataloge-item__img" style="background: url(img/pic_3.png) no-repeat 50% 50%;">
-                        </div>
-                        <div class="cataloge-item__name">Mercedes-Benz 100</div>
-                        <div class="cataloge-item__age"><span>1988</span> — <span>1996</span> гг.</div>
-                        <div class="cataloge-item__parts">в наличии <span>85</span> з/ч</div>
-                    </a>
-
-                    <a href="" class="cataloge-item">
-                        <div class="cataloge-item__img" style="background: url(img/pic_4.png) no-repeat 50% 50%;">
-                        </div>
-                        <div class="cataloge-item__name">Mercedes-Benz 100</div>
-                        <div class="cataloge-item__age"><span>1988</span> — <span>1996</span> гг.</div>
-                        <div class="cataloge-item__parts">в наличии <span>85</span> з/ч</div>
-                    </a>
-
-                    <a href="" class="cataloge-item">
-                        <div class="cataloge-item__img" style="background: url(img/pic_4.png) no-repeat 50% 50%;">
-                        </div>
-                        <div class="cataloge-item__name">Mercedes-Benz 100</div>
-                        <div class="cataloge-item__age"><span>1988</span> — <span>1996</span> гг.</div>
-                        <div class="cataloge-item__parts">в наличии <span>85</span> з/ч</div>
-                    </a>
-                </div>
-
+                <?php
+                the_posts_pagination( array(
+                    'prev_text'          => __( '«', 'twentyfifteen' ),
+                    'next_text'          => __( '»', 'twentyfifteen' ),
+                ) );
+                ?>
 
                 <?php
                 $page_object = get_queried_object();
                 $page_id     = get_queried_object_id();
-                $post_object = get_post( $post_id );
+                $post_object = get_post( $page_id );
                 ?>
                 <div class="main-text-wrapper">
                     <?php echo $post_object->post_content; ?>

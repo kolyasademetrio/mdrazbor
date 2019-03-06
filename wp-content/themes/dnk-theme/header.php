@@ -53,7 +53,7 @@ if ( function_exists( 'pll_current_language' ) ) {
                         <div class="header-left__logo">
                             <img src="<?php echo $logo; ?>" alt="">
                         </div>
-                    <?php else :?>
+                    <?php else : ?>
                         <a href="<?php echo esc_url(home_url('/')); ?>" class="header-left__logo">
                             <img src="<?php bloginfo('template_url'); ?>/img/logo.png" alt="">
                         </a>
@@ -67,8 +67,7 @@ if ( function_exists( 'pll_current_language' ) ) {
                     </div>
                 </div>
                 <div class="header__right">
-
-                    <?php $menu_name = 'main_menu_'. $locale; ?>
+                    <?php //$menu_name = 'main_menu_'. $locale; ?>
                     <?php
                     wp_nav_menu( array(
                         'theme_location'  => 'primary',

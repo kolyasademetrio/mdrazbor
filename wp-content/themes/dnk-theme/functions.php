@@ -1005,8 +1005,23 @@ function custom_post_type()
         'not_found_in_trash' => __('В корзине не найдено модели', 'twentyfifteen'),
     );
 
-// Set other options for Custom Post Type
+    $labels2 = array(
+        'name' => _x('Запачасти', 'Post Type General Name', 'twentyfifteen'),
+        'singular_name' => _x('Запчасть', 'Post Type Singular Name', 'twentyfifteen'),
+        'menu_name' => __('Запачасти', 'twentyfifteen'),
+        'parent_item_colon' => __('Parent Movie', 'twentyfifteen'),
+        'all_items' => __('Все запчасти', 'twentyfifteen'),
+        'view_item' => __('Просмотреть', 'twentyfifteen'),
+        'add_new_item' => __('Добавить запчасть', 'twentyfifteen'),
+        'add_new' => __('Добавить запчасть', 'twentyfifteen'),
+        'edit_item' => __('Редактировать запчасть', 'twentyfifteen'),
+        'update_item' => __('Обновить запчасть', 'twentyfifteen'),
+        'search_items' => __('Найти запчасть', 'twentyfifteen'),
+        'not_found' => __('Не найдено', 'twentyfifteen'),
+        'not_found_in_trash' => __('В корзине не найдено запчасти', 'twentyfifteen'),
+    );
 
+    // Set other options for Custom Post Type
     $args = array(
         'label' => __('models', 'twentyfifteen'),
         'description' => __('Модели авто', 'twentyfifteen'),
@@ -1014,7 +1029,7 @@ function custom_post_type()
         // Features this CPT supports in Post Editor
         'supports' => array('title', 'editor', 'excerpt', 'author', 'thumbnail', 'comments', 'revisions', 'custom-fields',),
         // You can associate this CPT with a taxonomy or custom taxonomy.
-        'taxonomies' => array('genres'),
+        'taxonomies' => array('category'),
         /* A hierarchical CPT is like Pages and can have
         * Parent and child items. A non-hierarchical CPT
         * is like Posts.
@@ -1032,9 +1047,35 @@ function custom_post_type()
         'publicly_queryable' => true,
         'capability_type' => 'page',
     );
+    $args2 = array(
+        'label' => __('sparepart', 'twentyfifteen'),
+        'description' => __('Запчасти', 'twentyfifteen'),
+        'labels' => $labels2,
+        // Features this CPT supports in Post Editor
+        'supports' => array('title', 'editor', 'excerpt', 'author', 'thumbnail', 'comments', 'revisions', 'custom-fields',),
+        // You can associate this CPT with a taxonomy or custom taxonomy.
+        'taxonomies' => array('category'),
+        /* A hierarchical CPT is like Pages and can have
+        * Parent and child items. A non-hierarchical CPT
+        * is like Posts.
+        */
+        'hierarchical' => false,
+        'public' => true,
+        'show_ui' => true,
+        'show_in_menu' => true,
+        'show_in_nav_menus' => true,
+        'show_in_admin_bar' => true,
+        'menu_position' => 6,
+        'can_export' => true,
+        'has_archive' => true,
+        'exclude_from_search' => false,
+        'publicly_queryable' => true,
+        'capability_type' => 'page',
+    );
 
     // Registering your Custom Post Type
     register_post_type('products', $args);
+    register_post_type('sparepart', $args2);
 
 }
 add_action('init', 'custom_post_type', 0);
@@ -1063,6 +1104,7 @@ function unset_attach_srcset_attr($attr)
 
 /* Добавить свой размер Изображения */
 add_image_size('product-featured-image', 270, 200, true);
+add_image_size('sparepart-featured-image', 170, 130, true);
 
 
 /* pll_register_string */

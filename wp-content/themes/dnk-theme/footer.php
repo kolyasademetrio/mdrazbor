@@ -112,7 +112,7 @@ if ( function_exists( 'pll_current_language' ) ) {
 </div><!-- div.main-wrapper -->
 
 <div class="icon-load"></div>
-
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBQtyMO__W6L6fZNbijUDCdTVQkTLq4w7g"></script>
 <?php wp_footer(); ?>
 
 </body>
