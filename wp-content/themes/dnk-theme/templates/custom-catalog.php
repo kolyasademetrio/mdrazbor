@@ -88,7 +88,18 @@ if ( function_exists( 'pll_current_language' ) ) {
                                         ?>
                                     <?php endif; ?>
                                 </div>
-                                <div class="cataloge-item__parts">в наличии <span>85</span> з/ч</div>
+                                <?php
+                                $parts = get_field('model_spareparts');
+                                $parts_count = $parts ? count($parts) : 0;
+                                $parts_summ = 0;
+                                if ( $parts_count ) :
+                                    foreach($parts as $part):
+                                        $this_part_count = get_field('sparepart_qty', $part->ID);
+                                        $parts_summ += $this_part_count;
+                                    endforeach;
+                                endif;
+                                ?>
+                                <div class="cataloge-item__parts">в наличии <span><?php echo $parts_summ; ?></span> з/ч</div>
                             </a>
                         <?php
                         }

@@ -81,3 +81,20 @@ div.wpcf7-mail-sent-ok {
 .navigation.pagination h2 {
     display: none !important;
 }
+
+.card-list-param.thin-text p {
+    padding: 0;
+    line-height: 18px;
+    font-weight: 100;
+}
+
+.single-item-additional-decription {
+    font-size: 18px;
+    line-height: 24px;
+    color: #fff;
+    font-weight: 100;
+}
+
+.single-item-additional-decription p {
+    padding: 15px 0 15px 0;
+}

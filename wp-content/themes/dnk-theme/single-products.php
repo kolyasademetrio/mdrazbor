@@ -42,14 +42,16 @@ if ( function_exists( 'pll_current_language' ) ) {
     </ul>
 </div>
 <section class="main-slider-block">
-    <div class="wrapper">
+    <div class="wrapper cataloge-page">
         <div class="main-slider-wrapper">
 
             <?php get_template_part( 'templates/custom','sidebar'); ?>
 
             <div class="right-wrapper">
 
-                <h3 class="header">Запчасти б/у Mercedes-Benz 190 (W201) 1982–1993, разборка Мерседес Бенц 190 (201 кузов)</h3>
+                <h3 class="header">
+                    <?php echo get_field('model_title'); ?>
+                </h3>
                 <form action="" method="">
                     <div class="search-form">
                         <div class="search-wrapper">
@@ -61,862 +63,89 @@ if ( function_exists( 'pll_current_language' ) ) {
                     </div>
                 </form>
 
-                <div class="answer-wrapper card-answer-wrapper">
-                    <div class="answer-header bordered thin-text js-answer-header">
-                        Дооснащение, аксессуары (7)
-                    </div>
-                    <div class="answer-hidden">
-                        <div class="card-list-wrapper">
-                            <ul class="card-list-parts">
-                                <li class="card-list__item">
-                                    <a href="" class="card-list__link">
-                                        <div class="card-list-img-wrapper">
-                                            <div class="card-list__img" style="background: url(<?php bloginfo('template_url'); ?>/img/img_1.jpg) no-repeat 50% 50%;">
+                <?php $parts = get_field('model_spareparts'); ?>
 
-                                            </div>
-                                            <div class="card-list__name-item">
-                                                Цилиндр сцепления главный
-                                            </div>
-                                        </div>
+                <?php if ( !empty($parts) ) : ?>
+                    <?php $categories; ?>
+                    <?php foreach ( $parts as $part_i ) : ?>
+                        <?php
+                        $part_ID = $part_i->ID;
+                        $cat_name = get_the_category( $part_i->ID )[0]->name;
+                        $categories[$cat_name]['ids'][] = $part_ID;
+                        $categories[$cat_name]['cat_name'] = $cat_name;
+                        ?>
+                    <?php endforeach; ?>
 
-                                        <div class="card-list-info-wrapper">
-                                            <div class="card-list-param-wrapper">
-                                                <div class="card-list-price">1750 р.</div>
-                                                <div class="card-list-param thin-text grey">в наличии 2 запчасти</div>
-                                            </div>
-                                            <div class="card-list-price-wrapper">
-                                                <div class="btn blue__btn">
-                                                    <div class="btn__inner">Подробнее</div>
-                                                </div>
-                                            </div>
-                                        </div>
+                    <?php foreach ( $categories as $category_i ) : ?>
+                        <div class="answer-wrapper card-answer-wrapper">
+                            <div class="answer-header bordered thin-text js-answer-header">
+                                <?php
+                                    $qty_summ = 0;
+                                    if ( !empty($category_i['ids']) ) {
+                                        foreach ( $category_i['ids'] as $id_i ) {
+                                            $qty_summ += get_field('sparepart_qty', $id_i);
+                                        }
+                                    }
+                                ?>
+                                <?php echo $category_i['cat_name'] . '(' . $qty_summ . ')'; ?>
+                            </div>
 
-                                    </a>
+                            <div class="answer-hidden">
+                                <div class="card-list-wrapper">
+                                    <ul class="card-list-parts">
+                                        <li class="card-list__item">
+                                            <?php if ( !empty($category_i['ids']) ) : ?>
+                                                <?php foreach ( $category_i['ids'] as $id ) : ?>
+                                                    <?php /*$sparepart_image = get_field('sparepart_image', $id); */?><!--
+                                                    <?php /*echo $sparepart_image['sizes']['sparepart-featured-image'] . '<br>'; */?>
+                                                    <?php /*echo get_the_title($id) . '<br>'; */?>
+                                                    <?php /*echo get_field('sparepart_price', $id) . '<br>'; */?>
+                                                    <?php /*echo get_field('sparepart_qty', $id) . '<br>'; */?>
+                                                    --><?php /*echo get_permalink($id) . '<br>'; */?>
 
-                                    <a href="" class="card-list__link">
-                                        <div class="card-list-img-wrapper">
-                                            <div class="card-list__img" style="background: url(<?php bloginfo('template_url'); ?>/img/img_1.jpg) no-repeat 50% 50%;">
+                                                    <a href="<?php echo get_permalink($id); ?>" class="card-list__link">
+                                                        <?php $sparepart_image = get_field('sparepart_image', $id); ?>
+                                                        <?php $sparepart_image_url = $sparepart_image['sizes']['sparepart-featured-image']; ?>
+                                                        <div class="card-list-img-wrapper">
+                                                            <div class="card-list__img" style="background: url(<?php echo $sparepart_image_url; ?>) no-repeat 50% 50%;">
+                                                            </div>
+                                                            <div class="card-list__name-item">
+                                                                <?php echo get_the_title($id); ?>
+                                                            </div>
+                                                        </div>
 
-                                            </div>
-                                            <div class="card-list__name-item">
-                                                Цилиндр сцепления главный
-                                            </div>
-                                        </div>
-
-                                        <div class="card-list-info-wrapper">
-                                            <div class="card-list-param-wrapper">
-                                                <div class="card-list-price">1750 р.</div>
-                                                <div class="card-list-param thin-text grey">в наличии 2 запчасти</div>
-                                            </div>
-                                            <div class="card-list-price-wrapper">
-                                                <div class="btn blue__btn">
-                                                    <div class="btn__inner">Подробнее</div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </a>
-                                </li>
-                            </ul>
+                                                        <div class="card-list-info-wrapper">
+                                                            <div class="card-list-param-wrapper">
+                                                                <div class="card-list-price">
+                                                                    <?php echo get_field('sparepart_price', $id); ?> р.
+                                                                </div>
+                                                                <div class="card-list-param thin-text grey">
+                                                                    в наличии <?php echo get_field('sparepart_qty', $id); ?> запчасти
+                                                                </div>
+                                                            </div>
+                                                            <div class="card-list-price-wrapper">
+                                                                <div class="btn blue__btn">
+                                                                    <div class="btn__inner">Подробнее</div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                <?php endforeach; ?>
+                                            <?php endif; ?>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-
-                <div class="answer-wrapper card-answer-wrapper">
-                    <div class="answer-header bordered thin-text js-answer-header">
-                        Система подачи воздуха (17)
-                    </div>
-                    <div class="answer-hidden">
-                        <div class="card-list-wrapper">
-                            <ul class="card-list-parts">
-                                <li class="card-list__item">
-                                    <a href="" class="card-list__link">
-                                        <div class="card-list-img-wrapper">
-                                            <div class="card-list__img" style="background: url(<?php bloginfo('template_url'); ?>/img/img_1.jpg) no-repeat 50% 50%;">
-
-                                            </div>
-                                            <div class="card-list__name-item">
-                                                Цилиндр сцепления главный
-                                            </div>
-                                        </div>
-
-                                        <div class="card-list-info-wrapper">
-                                            <div class="card-list-param-wrapper">
-                                                <div class="card-list-price">1750 р.</div>
-                                                <div class="card-list-param thin-text grey">в наличии 2 запчасти</div>
-                                            </div>
-                                            <div class="card-list-price-wrapper">
-                                                <div class="btn blue__btn">
-                                                    <div class="btn__inner">Подробнее</div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </a>
-
-                                    <a href="" class="card-list__link">
-                                        <div class="card-list-img-wrapper">
-                                            <div class="card-list__img" style="background: url(<?php bloginfo('template_url'); ?>/img/img_1.jpg) no-repeat 50% 50%;">
-
-                                            </div>
-                                            <div class="card-list__name-item">
-                                                Цилиндр сцепления главный
-                                            </div>
-                                        </div>
-
-                                        <div class="card-list-info-wrapper">
-                                            <div class="card-list-param-wrapper">
-                                                <div class="card-list-price">1750 р.</div>
-                                                <div class="card-list-param thin-text grey">в наличии 2 запчасти</div>
-                                            </div>
-                                            <div class="card-list-price-wrapper">
-                                                <div class="btn blue__btn">
-                                                    <div class="btn__inner">Подробнее</div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="answer-wrapper card-answer-wrapper">
-                    <div class="answer-header bordered thin-text js-answer-header">
-                        Топливная система (243)
-                    </div>
-                    <div class="answer-hidden">
-                        <div class="card-list-wrapper">
-                            <ul class="card-list-parts">
-                                <li class="card-list__item">
-                                    <a href="" class="card-list__link">
-                                        <div class="card-list-img-wrapper">
-                                            <div class="card-list__img" style="background: url(<?php bloginfo('template_url'); ?>/img/img_1.jpg) no-repeat 50% 50%;">
-
-                                            </div>
-                                            <div class="card-list__name-item">
-                                                Цилиндр сцепления главный
-                                            </div>
-                                        </div>
-
-                                        <div class="card-list-info-wrapper">
-                                            <div class="card-list-param-wrapper">
-                                                <div class="card-list-price">1750 р.</div>
-                                                <div class="card-list-param thin-text grey">в наличии 2 запчасти</div>
-                                            </div>
-                                            <div class="card-list-price-wrapper">
-                                                <div class="btn blue__btn">
-                                                    <div class="btn__inner">Подробнее</div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </a>
-
-                                    <a href="" class="card-list__link">
-                                        <div class="card-list-img-wrapper">
-                                            <div class="card-list__img" style="background: url(<?php bloginfo('template_url'); ?>/img/img_1.jpg) no-repeat 50% 50%;">
-
-                                            </div>
-                                            <div class="card-list__name-item">
-                                                Цилиндр сцепления главный
-                                            </div>
-                                        </div>
-
-                                        <div class="card-list-info-wrapper">
-                                            <div class="card-list-param-wrapper">
-                                                <div class="card-list-price">1750 р.</div>
-                                                <div class="card-list-param thin-text grey">в наличии 2 запчасти</div>
-                                            </div>
-                                            <div class="card-list-price-wrapper">
-                                                <div class="btn blue__btn">
-                                                    <div class="btn__inner">Подробнее</div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="answer-wrapper card-answer-wrapper">
-                    <div class="answer-header bordered thin-text js-answer-header">
-                        Система охлаждения (7)
-                    </div>
-                    <div class="answer-hidden">
-                        <div class="card-list-wrapper">
-                            <ul class="card-list-parts">
-                                <li class="card-list__item">
-                                    <a href="" class="card-list__link">
-                                        <div class="card-list-img-wrapper">
-                                            <div class="card-list__img" style="background: url(<?php bloginfo('template_url'); ?>/img/img_1.jpg) no-repeat 50% 50%;">
-
-                                            </div>
-                                            <div class="card-list__name-item">
-                                                Цилиндр сцепления главный
-                                            </div>
-                                        </div>
-
-                                        <div class="card-list-info-wrapper">
-                                            <div class="card-list-param-wrapper">
-                                                <div class="card-list-price">1750 р.</div>
-                                                <div class="card-list-param thin-text grey">в наличии 2 запчасти</div>
-                                            </div>
-                                            <div class="card-list-price-wrapper">
-                                                <div class="btn blue__btn">
-                                                    <div class="btn__inner">Подробнее</div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </a>
-
-                                    <a href="" class="card-list__link">
-                                        <div class="card-list-img-wrapper">
-                                            <div class="card-list__img" style="background: url(<?php bloginfo('template_url'); ?>/img/img_1.jpg) no-repeat 50% 50%;">
-
-                                            </div>
-                                            <div class="card-list__name-item">
-                                                Цилиндр сцепления главный
-                                            </div>
-                                        </div>
-
-                                        <div class="card-list-info-wrapper">
-                                            <div class="card-list-param-wrapper">
-                                                <div class="card-list-price">1750 р.</div>
-                                                <div class="card-list-param thin-text grey">в наличии 2 запчасти</div>
-                                            </div>
-                                            <div class="card-list-price-wrapper">
-                                                <div class="btn blue__btn">
-                                                    <div class="btn__inner">Подробнее</div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="answer-wrapper card-answer-wrapper">
-                    <div class="answer-header bordered thin-text js-answer-header">
-                        Выхлопная система (7)
-                    </div>
-                    <div class="answer-hidden">
-                        <div class="card-list-wrapper">
-                            <ul class="card-list-parts">
-                                <li class="card-list__item">
-                                    <a href="" class="card-list__link">
-                                        <div class="card-list-img-wrapper">
-                                            <div class="card-list__img" style="background: url(<?php bloginfo('template_url'); ?>/img/img_1.jpg) no-repeat 50% 50%;">
-
-                                            </div>
-                                            <div class="card-list__name-item">
-                                                Цилиндр сцепления главный
-                                            </div>
-                                        </div>
-
-                                        <div class="card-list-info-wrapper">
-                                            <div class="card-list-param-wrapper">
-                                                <div class="card-list-price">1750 р.</div>
-                                                <div class="card-list-param thin-text grey">в наличии 2 запчасти</div>
-                                            </div>
-                                            <div class="card-list-price-wrapper">
-                                                <div class="btn blue__btn">
-                                                    <div class="btn__inner">Подробнее</div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </a>
-
-                                    <a href="" class="card-list__link">
-                                        <div class="card-list-img-wrapper">
-                                            <div class="card-list__img" style="background: url(<?php bloginfo('template_url'); ?>/img/img_1.jpg) no-repeat 50% 50%;">
-
-                                            </div>
-                                            <div class="card-list__name-item">
-                                                Цилиндр сцепления главный
-                                            </div>
-                                        </div>
-
-                                        <div class="card-list-info-wrapper">
-                                            <div class="card-list-param-wrapper">
-                                                <div class="card-list-price">1750 р.</div>
-                                                <div class="card-list-param thin-text grey">в наличии 2 запчасти</div>
-                                            </div>
-                                            <div class="card-list-price-wrapper">
-                                                <div class="btn blue__btn">
-                                                    <div class="btn__inner">Подробнее</div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="answer-wrapper card-answer-wrapper">
-                    <div class="answer-header bordered thin-text js-answer-header">
-                        Защита и подвес ДВС / КПП (7)
-                    </div>
-                    <div class="answer-hidden">
-                        <div class="card-list-wrapper">
-                            <ul class="card-list-parts">
-                                <li class="card-list__item">
-                                    <a href="" class="card-list__link">
-                                        <div class="card-list-img-wrapper">
-                                            <div class="card-list__img" style="background: url(<?php bloginfo('template_url'); ?>/img/img_1.jpg) no-repeat 50% 50%;">
-
-                                            </div>
-                                            <div class="card-list__name-item">
-                                                Цилиндр сцепления главный
-                                            </div>
-                                        </div>
-
-                                        <div class="card-list-info-wrapper">
-                                            <div class="card-list-param-wrapper">
-                                                <div class="card-list-price">1750 р.</div>
-                                                <div class="card-list-param thin-text grey">в наличии 2 запчасти</div>
-                                            </div>
-                                            <div class="card-list-price-wrapper">
-                                                <div class="btn blue__btn">
-                                                    <div class="btn__inner">Подробнее</div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </a>
-
-                                    <a href="" class="card-list__link">
-                                        <div class="card-list-img-wrapper">
-                                            <div class="card-list__img" style="background: url(<?php bloginfo('template_url'); ?>/img/img_1.jpg) no-repeat 50% 50%;">
-
-                                            </div>
-                                            <div class="card-list__name-item">
-                                                Цилиндр сцепления главный
-                                            </div>
-                                        </div>
-
-                                        <div class="card-list-info-wrapper">
-                                            <div class="card-list-param-wrapper">
-                                                <div class="card-list-price">1750 р.</div>
-                                                <div class="card-list-param thin-text grey">в наличии 2 запчасти</div>
-                                            </div>
-                                            <div class="card-list-price-wrapper">
-                                                <div class="btn blue__btn">
-                                                    <div class="btn__inner">Подробнее</div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="answer-wrapper card-answer-wrapper">
-                    <div class="answer-header bordered thin-text js-answer-header">
-                        Трансмиссия (7)
-                    </div>
-                    <div class="answer-hidden">
-                        <div class="card-list-wrapper">
-                            <ul class="card-list-parts">
-                                <li class="card-list__item">
-                                    <a href="" class="card-list__link">
-                                        <div class="card-list-img-wrapper">
-                                            <div class="card-list__img" style="background: url(<?php bloginfo('template_url'); ?>/img/img_1.jpg) no-repeat 50% 50%;">
-
-                                            </div>
-                                            <div class="card-list__name-item">
-                                                Цилиндр сцепления главный
-                                            </div>
-                                        </div>
-
-                                        <div class="card-list-info-wrapper">
-                                            <div class="card-list-param-wrapper">
-                                                <div class="card-list-price">1750 р.</div>
-                                                <div class="card-list-param thin-text grey">в наличии 2 запчасти</div>
-                                            </div>
-                                            <div class="card-list-price-wrapper">
-                                                <div class="btn blue__btn">
-                                                    <div class="btn__inner">Подробнее</div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </a>
-
-                                    <a href="" class="card-list__link">
-                                        <div class="card-list-img-wrapper">
-                                            <div class="card-list__img" style="background: url(<?php bloginfo('template_url'); ?>/img/img_1.jpg) no-repeat 50% 50%;">
-
-                                            </div>
-                                            <div class="card-list__name-item">
-                                                Цилиндр сцепления главный
-                                            </div>
-                                        </div>
-
-                                        <div class="card-list-info-wrapper">
-                                            <div class="card-list-param-wrapper">
-                                                <div class="card-list-price">1750 р.</div>
-                                                <div class="card-list-param thin-text grey">в наличии 2 запчасти</div>
-                                            </div>
-                                            <div class="card-list-price-wrapper">
-                                                <div class="btn blue__btn">
-                                                    <div class="btn__inner">Подробнее</div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="answer-wrapper card-answer-wrapper">
-                    <div class="answer-header bordered thin-text js-answer-header">
-                        Сцепление (2)
-                    </div>
-                    <div class="answer-hidden">
-                        <div class="card-list-wrapper">
-                            <ul class="card-list-parts">
-                                <li class="card-list__item">
-                                    <a href="" class="card-list__link">
-                                        <div class="card-list-img-wrapper">
-                                            <div class="card-list__img" style="background: url(<?php bloginfo('template_url'); ?>/img/img_1.jpg) no-repeat 50% 50%;">
-
-                                            </div>
-                                            <div class="card-list__name-item">
-                                                Цилиндр сцепления главный
-                                            </div>
-                                        </div>
-
-                                        <div class="card-list-info-wrapper">
-                                            <div class="card-list-param-wrapper">
-                                                <div class="card-list-price">1750 р.</div>
-                                                <div class="card-list-param thin-text grey">в наличии 2 запчасти</div>
-                                            </div>
-                                            <div class="card-list-price-wrapper">
-                                                <div class="btn blue__btn">
-                                                    <div class="btn__inner">Подробнее</div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </a>
-
-                                    <a href="" class="card-list__link">
-                                        <div class="card-list-img-wrapper">
-                                            <div class="card-list__img" style="background: url(<?php bloginfo('template_url'); ?>/img/img_1.jpg) no-repeat 50% 50%;">
-
-                                            </div>
-                                            <div class="card-list__name-item">
-                                                Цилиндр сцепления главный
-                                            </div>
-                                        </div>
-
-                                        <div class="card-list-info-wrapper">
-                                            <div class="card-list-param-wrapper">
-                                                <div class="card-list-price">1750 р.</div>
-                                                <div class="card-list-param thin-text grey">в наличии 2 запчасти</div>
-                                            </div>
-                                            <div class="card-list-price-wrapper">
-                                                <div class="btn blue__btn">
-                                                    <div class="btn__inner">Подробнее</div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="answer-wrapper card-answer-wrapper">
-                    <div class="answer-header bordered thin-text js-answer-header">
-                        Подвеска (7)
-                    </div>
-                    <div class="answer-hidden">
-                        <div class="card-list-wrapper">
-                            <ul class="card-list-parts">
-                                <li class="card-list__item">
-                                    <a href="" class="card-list__link">
-                                        <div class="card-list-img-wrapper">
-                                            <div class="card-list__img" style="background: url(<?php bloginfo('template_url'); ?>/img/img_1.jpg) no-repeat 50% 50%;">
-
-                                            </div>
-                                            <div class="card-list__name-item">
-                                                Цилиндр сцепления главный
-                                            </div>
-                                        </div>
-
-                                        <div class="card-list-info-wrapper">
-                                            <div class="card-list-param-wrapper">
-                                                <div class="card-list-price">1750 р.</div>
-                                                <div class="card-list-param thin-text grey">в наличии 2 запчасти</div>
-                                            </div>
-                                            <div class="card-list-price-wrapper">
-                                                <div class="btn blue__btn">
-                                                    <div class="btn__inner">Подробнее</div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </a>
-
-                                    <a href="" class="card-list__link">
-                                        <div class="card-list-img-wrapper">
-                                            <div class="card-list__img" style="background: url(<?php bloginfo('template_url'); ?>/img/img_1.jpg) no-repeat 50% 50%;">
-
-                                            </div>
-                                            <div class="card-list__name-item">
-                                                Цилиндр сцепления главный
-                                            </div>
-                                        </div>
-
-                                        <div class="card-list-info-wrapper">
-                                            <div class="card-list-param-wrapper">
-                                                <div class="card-list-price">1750 р.</div>
-                                                <div class="card-list-param thin-text grey">в наличии 2 запчасти</div>
-                                            </div>
-                                            <div class="card-list-price-wrapper">
-                                                <div class="btn blue__btn">
-                                                    <div class="btn__inner">Подробнее</div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="answer-wrapper card-answer-wrapper">
-                    <div class="answer-header bordered thin-text js-answer-header">
-                        Рулевое управление (7)
-                    </div>
-                    <div class="answer-hidden">
-                        <div class="card-list-wrapper">
-                            <ul class="card-list-parts">
-                                <li class="card-list__item">
-                                    <a href="" class="card-list__link">
-                                        <div class="card-list-img-wrapper">
-                                            <div class="card-list__img" style="background: url(<?php bloginfo('template_url'); ?>/img/img_1.jpg) no-repeat 50% 50%;">
-
-                                            </div>
-                                            <div class="card-list__name-item">
-                                                Цилиндр сцепления главный
-                                            </div>
-                                        </div>
-
-                                        <div class="card-list-info-wrapper">
-                                            <div class="card-list-param-wrapper">
-                                                <div class="card-list-price">1750 р.</div>
-                                                <div class="card-list-param thin-text grey">в наличии 2 запчасти</div>
-                                            </div>
-                                            <div class="card-list-price-wrapper">
-                                                <div class="btn blue__btn">
-                                                    <div class="btn__inner">Подробнее</div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </a>
-
-                                    <a href="" class="card-list__link">
-                                        <div class="card-list-img-wrapper">
-                                            <div class="card-list__img" style="background: url(<?php bloginfo('template_url'); ?>/img/img_1.jpg) no-repeat 50% 50%;">
-
-                                            </div>
-                                            <div class="card-list__name-item">
-                                                Цилиндр сцепления главный
-                                            </div>
-                                        </div>
-
-                                        <div class="card-list-info-wrapper">
-                                            <div class="card-list-param-wrapper">
-                                                <div class="card-list-price">1750 р.</div>
-                                                <div class="card-list-param thin-text grey">в наличии 2 запчасти</div>
-                                            </div>
-                                            <div class="card-list-price-wrapper">
-                                                <div class="btn blue__btn">
-                                                    <div class="btn__inner">Подробнее</div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="answer-wrapper card-answer-wrapper">
-                    <div class="answer-header bordered thin-text js-answer-header">
-                        Тормозная система (7)
-                    </div>
-                    <div class="answer-hidden">
-                        <div class="card-list-wrapper">
-                            <ul class="card-list-parts">
-                                <li class="card-list__item">
-                                    <a href="" class="card-list__link">
-                                        <div class="card-list-img-wrapper">
-                                            <div class="card-list__img" style="background: url(<?php bloginfo('template_url'); ?>/img/img_1.jpg) no-repeat 50% 50%;">
-
-                                            </div>
-                                            <div class="card-list__name-item">
-                                                Цилиндр сцепления главный
-                                            </div>
-                                        </div>
-
-                                        <div class="card-list-info-wrapper">
-                                            <div class="card-list-param-wrapper">
-                                                <div class="card-list-price">1750 р.</div>
-                                                <div class="card-list-param thin-text grey">в наличии 2 запчасти</div>
-                                            </div>
-                                            <div class="card-list-price-wrapper">
-                                                <div class="btn blue__btn">
-                                                    <div class="btn__inner">Подробнее</div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </a>
-
-                                    <a href="" class="card-list__link">
-                                        <div class="card-list-img-wrapper">
-                                            <div class="card-list__img" style="background: url(<?php bloginfo('template_url'); ?>/img/img_1.jpg) no-repeat 50% 50%;">
-
-                                            </div>
-                                            <div class="card-list__name-item">
-                                                Цилиндр сцепления главный
-                                            </div>
-                                        </div>
-
-                                        <div class="card-list-info-wrapper">
-                                            <div class="card-list-param-wrapper">
-                                                <div class="card-list-price">1750 р.</div>
-                                                <div class="card-list-param thin-text grey">в наличии 2 запчасти</div>
-                                            </div>
-                                            <div class="card-list-price-wrapper">
-                                                <div class="btn blue__btn">
-                                                    <div class="btn__inner">Подробнее</div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="answer-wrapper card-answer-wrapper">
-                    <div class="answer-header bordered thin-text js-answer-header">
-                        Колеса, Шины (7)
-                    </div>
-                    <div class="answer-hidden">
-                        <div class="card-list-wrapper">
-                            <ul class="card-list-parts">
-                                <li class="card-list__item">
-                                    <a href="" class="card-list__link">
-                                        <div class="card-list-img-wrapper">
-                                            <div class="card-list__img" style="background: url(<?php bloginfo('template_url'); ?>/img/img_1.jpg) no-repeat 50% 50%;">
-
-                                            </div>
-                                            <div class="card-list__name-item">
-                                                Цилиндр сцепления главный
-                                            </div>
-                                        </div>
-
-                                        <div class="card-list-info-wrapper">
-                                            <div class="card-list-param-wrapper">
-                                                <div class="card-list-price">1750 р.</div>
-                                                <div class="card-list-param thin-text grey">в наличии 2 запчасти</div>
-                                            </div>
-                                            <div class="card-list-price-wrapper">
-                                                <div class="btn blue__btn">
-                                                    <div class="btn__inner">Подробнее</div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </a>
-
-                                    <a href="" class="card-list__link">
-                                        <div class="card-list-img-wrapper">
-                                            <div class="card-list__img" style="background: url(<?php bloginfo('template_url'); ?>/img/img_1.jpg) no-repeat 50% 50%;">
-
-                                            </div>
-                                            <div class="card-list__name-item">
-                                                Цилиндр сцепления главный
-                                            </div>
-                                        </div>
-
-                                        <div class="card-list-info-wrapper">
-                                            <div class="card-list-param-wrapper">
-                                                <div class="card-list-price">1750 р.</div>
-                                                <div class="card-list-param thin-text grey">в наличии 2 запчасти</div>
-                                            </div>
-                                            <div class="card-list-price-wrapper">
-                                                <div class="btn blue__btn">
-                                                    <div class="btn__inner">Подробнее</div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="answer-wrapper card-answer-wrapper">
-                    <div class="answer-header bordered thin-text js-answer-header">
-                        Кузов (7)
-                    </div>
-                    <div class="answer-hidden">
-                        <div class="card-list-wrapper">
-                            <ul class="card-list-parts">
-                                <li class="card-list__item">
-                                    <a href="" class="card-list__link">
-                                        <div class="card-list-img-wrapper">
-                                            <div class="card-list__img" style="background: url(<?php bloginfo('template_url'); ?>/img/img_1.jpg) no-repeat 50% 50%;">
-
-                                            </div>
-                                            <div class="card-list__name-item">
-                                                Цилиндр сцепления главный
-                                            </div>
-                                        </div>
-
-                                        <div class="card-list-info-wrapper">
-                                            <div class="card-list-param-wrapper">
-                                                <div class="card-list-price">1750 р.</div>
-                                                <div class="card-list-param thin-text grey">в наличии 2 запчасти</div>
-                                            </div>
-                                            <div class="card-list-price-wrapper">
-                                                <div class="btn blue__btn">
-                                                    <div class="btn__inner">Подробнее</div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </a>
-
-                                    <a href="" class="card-list__link">
-                                        <div class="card-list-img-wrapper">
-                                            <div class="card-list__img" style="background: url(<?php bloginfo('template_url'); ?>/img/img_1.jpg) no-repeat 50% 50%;">
-
-                                            </div>
-                                            <div class="card-list__name-item">
-                                                Цилиндр сцепления главный
-                                            </div>
-                                        </div>
-
-                                        <div class="card-list-info-wrapper">
-                                            <div class="card-list-param-wrapper">
-                                                <div class="card-list-price">1750 р.</div>
-                                                <div class="card-list-param thin-text grey">в наличии 2 запчасти</div>
-                                            </div>
-                                            <div class="card-list-price-wrapper">
-                                                <div class="btn blue__btn">
-                                                    <div class="btn__inner">Подробнее</div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="answer-wrapper card-answer-wrapper">
-                    <div class="answer-header bordered thin-text js-answer-header">
-                        Осна (7)
-                    </div>
-                    <div class="answer-hidden">
-                        <div class="card-list-wrapper">
-                            <ul class="card-list-parts">
-                                <li class="card-list__item">
-                                    <a href="" class="card-list__link">
-                                        <div class="card-list-img-wrapper">
-                                            <div class="card-list__img" style="background: url(<?php bloginfo('template_url'); ?>/img/img_1.jpg) no-repeat 50% 50%;">
-
-                                            </div>
-                                            <div class="card-list__name-item">
-                                                Цилиндр сцепления главный
-                                            </div>
-                                        </div>
-
-                                        <div class="card-list-info-wrapper">
-                                            <div class="card-list-param-wrapper">
-                                                <div class="card-list-price">1750 р.</div>
-                                                <div class="card-list-param thin-text grey">в наличии 2 запчасти</div>
-                                            </div>
-                                            <div class="card-list-price-wrapper">
-                                                <div class="btn blue__btn">
-                                                    <div class="btn__inner">Подробнее</div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </a>
-
-                                    <a href="" class="card-list__link">
-                                        <div class="card-list-img-wrapper">
-                                            <div class="card-list__img" style="background: url(<?php bloginfo('template_url'); ?>/img/img_1.jpg) no-repeat 50% 50%;">
-
-                                            </div>
-                                            <div class="card-list__name-item">
-                                                Цилиндр сцепления главный
-                                            </div>
-                                        </div>
-
-                                        <div class="card-list-info-wrapper">
-                                            <div class="card-list-param-wrapper">
-                                                <div class="card-list-price">1750 р.</div>
-                                                <div class="card-list-param thin-text grey">в наличии 2 запчасти</div>
-                                            </div>
-                                            <div class="card-list-price-wrapper">
-                                                <div class="btn blue__btn">
-                                                    <div class="btn__inner">Подробнее</div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <p class="just-text">Мы продаём контрактные (бывшие в употреблении) оригинальные запчасти для автомобилей марки Mercedes-Benz (Мерседес Бенц) в Санкт-Петербурге и Москве с доставкой по России. Представленные у нас б/у запчасти гарантированно не имеют пробега по Российской Федерации, поставляются из Европы, Японии и Кореи. Мы не работаем с российскими авто разборками, а импортируем авто запчасти из-за границы, где разбор автомобилей Mercedes-Benz осуществляют специалисты на соответствующем оборудовании. Чтобы узнать точную цену на необходимую вам деталь, пожалуйста, выберите модель в форме выше или оставьте запрос на поиск автозапчастей.</p>
-                <p class="just-text">Компания FINNAUTOPARTS была основана в 2011 г. в Санкт-Петербурге и успела хорошо зарекомендовать себя благодаря оперативной работе, качественному товару и доброму отношению к своим клиентам. У нас </p>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+
+                <p class="just-text">
+                    <?php the_field('model_common_1', 'option') ?>
+                </p>
+                <p class="just-text">
+                    <?php the_field('model_common_2', 'option') ?>
+                </p>
             </div>
         </div>
 
@@ -928,25 +157,8 @@ if ( function_exists( 'pll_current_language' ) ) {
 
 <section class="leave-order">
     <div class="wrapper">
-        <form action="" method="">
-            <h2 class="leave-order__header">оставить заявку</h2>
-            <div class="leave-order-wrapper">
-                <ul class="left-menu-list">
-                    <li class="left-menu-list__item">
-                        <input type="text" name="number" placeholder="номер заявки">
-                    </li>
-
-                    <li class="left-menu-list__item " >
-                        <input type="text" name="phone" placeholder="номера телефона">
-                    </li>
-                </ul>
-
-                <a href="" class="btn">
-                    <div class="btn__inner">Проверить</div>
-                </a>
-            </div>
-        </form>
-
+        <?php $form_model = get_field('form_model', 'option') ?>
+        <?php echo do_shortcode( $form_model ) ?>
     </div>
 </section>
 
