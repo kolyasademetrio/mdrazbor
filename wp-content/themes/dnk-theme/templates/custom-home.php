@@ -11,30 +11,6 @@ if ( function_exists( 'pll_current_language' ) ) {
 <section class="main-slider-block">
     <div class="wrapper">
         <div class="main-slider-wrapper">
-            <!--<aside class="left-menu">
-                <ul class="left-menu-list ">
-                    <li class="left-menu-list__item">
-                        <select class="styled">
-                            <option>Выберите марку</option>
-                            <option>Выберите деталь</option>
-                        </select>
-                    </li>
-
-                    <li class="left-menu-list__item">
-                        <select class="styled">
-                            <option>Алматы</option>
-                            <option>Еще что-то</option>
-                        </select>
-                    </li>
-                </ul>
-
-                <a href="" class="btn blue__btn">
-                    <div class="btn__inner">перейти к каталогу</div>
-                </a>
-
-                <?php /*$form_1 = get_field('form_1', 'option') */?>
-                <?php /*echo do_shortcode( $form_1 ) */?>
-            </aside>-->
 
             <?php get_template_part( 'templates/custom','sidebar'); ?>
 
@@ -58,82 +34,112 @@ if ( function_exists( 'pll_current_language' ) ) {
 <!-- main-cataloge-wrapper -->
 <section class="main-cataloge-wrapper">
     <div class="wrapper">
-        <form action="" method="">
+        <form role="search" id="searchform-ss" action="<?php echo home_url( '/' ); ?>" method="get">
             <div class="search-form">
                 <div class="search-wrapper">
-                    <input type="search" placeholder="Поиск модели автомобиля по названию или году выпуска">
+                    <input type="hidden" value="product" name="post_type">
+                    <input type="search" placeholder="Поиск модели автомобиля по названию или году выпуска" name="ss" id="ss" value="<?php echo get_search_query(); ?>">
                 </div>
                 <div class="submit-wrapper">
                     <input type="submit" value="">
                 </div>
             </div>
-
         </form>
-        <div class="main-cataloge">
-            <a href="" class="cataloge-item">
-                <div class="cataloge-item__img" style="background: url(<?php bloginfo('template_url'); ?>/img/pic_1.png) no-repeat 50% 50%;">
-                </div>
-                <div class="cataloge-item__name">Mercedes-Benz 100</div>
-                <div class="cataloge-item__age"><span>1988</span> — <span>1996</span> гг.</div>
-                <div class="cataloge-item__parts">в наличии <span>85</span> з/ч</div>
-            </a>
 
-            <a href="" class="cataloge-item">
-                <div class="cataloge-item__img" style="background: url(<?php bloginfo('template_url'); ?>/img/pic_2.png) no-repeat 50% 50%;">
-                </div>
-                <div class="cataloge-item__name">Mercedes-Benz 100</div>
-                <div class="cataloge-item__age"><span>1988</span> — <span>1996</span> гг.</div>
-                <div class="cataloge-item__parts">в наличии <span>85</span> з/ч</div>
-            </a>
+        <?php
 
-            <a href="" class="cataloge-item">
-                <div class="cataloge-item__img" style="background: url(<?php bloginfo('template_url'); ?>/img/pic_3.png) no-repeat 50% 50%;">
-                </div>
-                <div class="cataloge-item__name">Mercedes-Benz 100</div>
-                <div class="cataloge-item__age"><span>1988</span> — <span>1996</span> гг.</div>
-                <div class="cataloge-item__parts">в наличии <span>85</span> з/ч</div>
-            </a>
+        $search_get = $_GET["ss"];
 
-            <a href="" class="cataloge-item">
-                <div class="cataloge-item__img" style="background: url(<?php bloginfo('template_url'); ?>/img/pic_4.png) no-repeat 50% 50%;">
-                </div>
-                <div class="cataloge-item__name">Mercedes-Benz 100</div>
-                <div class="cataloge-item__age"><span>1988</span> — <span>1996</span> гг.</div>
-                <div class="cataloge-item__parts">в наличии <span>85</span> з/ч</div>
-            </a>
+        if ( get_query_var('paged') ) {
+            $paged = get_query_var('paged');
+        } elseif ( get_query_var('page') ) { // 'page' is used instead of 'paged' on Static Front Page
+            $paged = get_query_var('page');
+        } else {
+            $paged = 1;
+        }
 
-            <a href="" class="cataloge-item">
-                <div class="cataloge-item__img" style="background: url(<?php bloginfo('template_url'); ?>/img/pic_1.png) no-repeat 50% 50%;">
-                </div>
-                <div class="cataloge-item__name">Mercedes-Benz 100</div>
-                <div class="cataloge-item__age"><span>1988</span> — <span>1996</span> гг.</div>
-                <div class="cataloge-item__parts">в наличии <span>85</span> з/ч</div>
-            </a>
+        $args = array(
+            'post_type' => 'products',
+            'posts_per_page' => 8,
+            'paged' => $paged,
+            's' =>$search_get,
+        );
 
-            <a href="" class="cataloge-item">
-                <div class="cataloge-item__img" style="background: url(<?php bloginfo('template_url'); ?>/img/pic_2.png) no-repeat 50% 50%;">
-                </div>
-                <div class="cataloge-item__name">Mercedes-Benz 100</div>
-                <div class="cataloge-item__age"><span>1988</span> — <span>1996</span> гг.</div>
-                <div class="cataloge-item__parts">в наличии <span>85</span> з/ч</div>
-            </a>
+        $models_home_query  = new WP_Query( $args );
 
-            <a href="" class="cataloge-item">
-                <div class="cataloge-item__img" style="background: url(<?php bloginfo('template_url'); ?>/img/pic_3.png) no-repeat 50% 50%;">
-                </div>
-                <div class="cataloge-item__name">Mercedes-Benz 100</div>
-                <div class="cataloge-item__age"><span>1988</span> — <span>1996</span> гг.</div>
-                <div class="cataloge-item__parts">в наличии <span>85</span> з/ч</div>
-            </a>
+        /*$temp_query = $wp_query;
+        $wp_query   = NULL;
+        $wp_query   = $models_home_query;*/
 
-            <a href="" class="cataloge-item">
-                <div class="cataloge-item__img" style="background: url(<?php bloginfo('template_url'); ?>/img/pic_4.png) no-repeat 50% 50%;">
-                </div>
-                <div class="cataloge-item__name">Mercedes-Benz 100</div>
-                <div class="cataloge-item__age"><span>1988</span> — <span>1996</span> гг.</div>
-                <div class="cataloge-item__parts">в наличии <span>85</span> з/ч</div>
-            </a>
+        if ( $models_home_query ->have_posts() ) {
+            ?>
+            <div class="main-cataloge ">
+                <?php
+                while ( $models_home_query->have_posts() ) {
+                    $models_home_query->the_post();
+                    ?>
+                    <a href="<?php echo $url = get_post_permalink(get_the_ID()); ?>" class="cataloge-item">
+                        <div class="cataloge-item__img" style="background: url(<?php echo get_field('model_img', get_the_ID()); ?>) no-repeat 50% 50%;">
+                        </div>
+                        <div class="cataloge-item__name">
+                            <?php the_title(); ?>
+                        </div>
+                        <div class="cataloge-item__age">
+                            <?php $categories = wp_get_post_categories(get_the_ID(), array('fields' => 'names')); ?>
+                            <?php if ( !empty($categories) ) : ?>
+                                <?php
+                                $result = array();
+                                foreach ( $categories as $category ) {
+                                    $result[] = '<span>'.$category .'</span> г.';
+                                }
+                                $result = implode( ', ', $result );
+                                echo $result;
+                                ?>
+                            <?php endif; ?>
+                        </div>
+                        <?php
+                        $parts = get_field('model_spareparts');
+                        $parts_count = $parts ? count($parts) : 0;
+                        $parts_summ = 0;
+                        if ( $parts_count ) :
+                            foreach($parts as $part):
+                                $this_part_count = get_field('sparepart_qty', $part->ID);
+                                $parts_summ += $this_part_count;
+                            endforeach;
+                        endif;
+                        ?>
+                        <div class="cataloge-item__parts">в наличии <span><?php echo $parts_summ; ?></span> з/ч</div>
+                    </a>
+                    <?php
+                }
+                ?>
+            </div>
+            <?php
+        }
+        wp_reset_postdata();
+        ?>
+
+
+        <div class="nav-links">
+            <?php
+            echo paginate_links( array(
+                'base'         => str_replace( 999999999, '%#%', esc_url( get_pagenum_link( 999999999 ) ) ),
+                'total'        => $models_home_query->max_num_pages,
+                'current'      => max( 1, $paged ),
+                'format'       => '?paged=%#%',
+                'show_all'     => false,
+                'type'         => 'plain',
+                'end_size'     => 2,
+                'mid_size'     => 1,
+                'prev_next'    => true,
+                'prev_text'          => __( '«', 'twentyfifteen' ),
+                'next_text'          => __( '»', 'twentyfifteen' ),
+                'add_args'     => false,
+                'add_fragment' => '',
+            ) );
+            ?>
         </div>
+
 
     </div>
 </section>

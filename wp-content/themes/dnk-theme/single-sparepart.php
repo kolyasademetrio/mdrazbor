@@ -31,16 +31,9 @@ if ( function_exists( 'pll_current_language' ) ) {
 <div class="overlay js-overlay"></div>
 
 <div class="wrapper">
-    <ul class="bread-crambs">
-        <li class="bread-crambs__item">
-            <a href="#" class="bread-crambs__link">Главная </a>
-        </li>
-
-        <li class="bread-crambs__item">
-            Каталог
-        </li>
-    </ul>
+    <?php if( function_exists('kama_breadcrumbs') ) kama_breadcrumbs('  '); ?>
 </div>
+
 <section class="main-slider-block">
     <div class="wrapper cataloge-page">
         <div class="main-slider-wrapper">

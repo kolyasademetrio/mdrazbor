@@ -631,6 +631,7 @@ class Kama_Breadcrumbs
         'show_post_title' => true,  // показывать ли название записи в конце (последний элемент). Для записей, страниц, вложений
         'show_term_title' => true,  // показывать ли название элемента таксономии в конце (последний элемент). Для меток, рубрик и других такс
         'title_patt' => '<span class="kb_title">%s</span>', // шаблон для последнего заголовка. Если включено: show_post_title или show_term_title
+        'title_patt_archive' => '<span class="kb_title archive-page">%s</span>', // шаблон для последнего заголовка. Если включено: show_post_title или show_term_title
         'last_sep' => true,  // показывать последний разделитель, когда заголовок в конце не отображается
         'markup' => 'schema.org', // 'markup' - микроразметка. Может быть: 'rdf.data-vocabulary.org', 'schema.org', '' - без микроразметки
         // или можно указать свой массив разметки:
@@ -919,7 +920,10 @@ class Kama_Breadcrumbs
         $term_id = ($start_from === 'parent') ? $term->parent : $term->term_id;
         while ($term_id) {
             $term = get_term($term_id, $term->taxonomy);
-            $termlinks[] = sprintf($this->arg->linkpatt, get_term_link($term), esc_html($term->name));
+
+            //убрал ссылку для страницы архива типа записи ( если находимся на странице записи )
+            //$termlinks[] = sprintf($this->arg->linkpatt, get_term_link($term), esc_html($term->name));
+            $termlinks[] = sprintf($this->arg->title_patt_archive, esc_html($term->name));
             $term_id = $term->parent;
         }
 
@@ -933,7 +937,9 @@ class Kama_Breadcrumbs
     function _add_title($add_to, $obj, $term_title = '')
     {
         $arg = &$this->arg; // упростим...
+
         $title = $term_title ? $term_title : esc_html($obj->post_title); // $term_title чиститься отдельно, теги моугт быть...
+
         $show_title = $term_title ? $arg->show_term_title : $arg->show_post_title;
 
         // пагинация
@@ -942,10 +948,12 @@ class Kama_Breadcrumbs
             $add_to .= ($add_to ? $arg->sep : '') . sprintf($arg->linkpatt, $link, $title) . $arg->pg_end;
         } // дополняем - ставим sep
         elseif ($add_to) {
-            if ($show_title)
+            if ($show_title) {
                 $add_to .= $arg->sep . sprintf($arg->title_patt, $title);
-            elseif ($arg->last_sep)
+            }
+            elseif ($arg->last_sep) {
                 $add_to .= $arg->sep;
+            }
         } // sep будет потом...
         elseif ($show_title)
             $add_to = sprintf($arg->title_patt, $title);
@@ -993,7 +1001,7 @@ function custom_post_type()
         'name' => _x('Модели авто', 'Post Type General Name', 'twentyfifteen'),
         'singular_name' => _x('Модель авто', 'Post Type Singular Name', 'twentyfifteen'),
         'menu_name' => __('Модели авто', 'twentyfifteen'),
-        'parent_item_colon' => __('Parent Movie', 'twentyfifteen'),
+        'parent_item_colon' => __('Parent Model', 'twentyfifteen'),
         'all_items' => __('Все модели', 'twentyfifteen'),
         'view_item' => __('Просмотреть', 'twentyfifteen'),
         'add_new_item' => __('Добавить модель', 'twentyfifteen'),
@@ -1043,6 +1051,7 @@ function custom_post_type()
         'menu_position' => 5,
         'can_export' => true,
         'has_archive' => true,
+        'rewrite' => array('slug' => 'models'),
         'exclude_from_search' => false,
         'publicly_queryable' => true,
         'capability_type' => 'page',
@@ -1117,12 +1126,11 @@ add_action('init', function () {
 		pll_register_string('twentyfifteen', 'Свернуть текст');
 	}
 });
+/* pll_register_string End */
 
-
-// Задать классы для главного меню
+/* Задать классы для главного меню */
 add_filter('nav_menu_css_class' , 'special_nav_class' , 10 , 2);
 function special_nav_class($classes, $item){
-
     $classes['class'] = 'header-nav-list__item';
     return $classes;
 }
@@ -1132,3 +1140,27 @@ function nav_link_filter( $atts, $item, $args, $link_before ){
     $atts['class'] = 'header-nav-list__link';
     return $atts;
 }
+/* Задать классы для главного меню End */
+
+
+/* Добавление пагинации для страницы ахива Моделей */
+function custom_posts_per_page( $query ) {
+    if ( $query->is_archive('models') ) {
+        set_query_var('posts_per_page', 9);
+    }
+}
+add_action( 'pre_get_posts', 'custom_posts_per_page' );
+/* Добавление пагинации для страницы ахива Моделей End */
+
+
+/*add_filter( 'search_template', function ( $template ) {
+    if ( is_post_type_archive('products') && is_search() ) {
+        $find_template = locate_template( ['archive-products.php'] );
+
+        if ( '' !== $find_template ) {
+            $template = $find_template;
+        }
+    }
+
+    return $template;
+});*/

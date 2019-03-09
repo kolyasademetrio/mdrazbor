@@ -10,15 +10,9 @@ if ( function_exists( 'pll_current_language' ) ) {
 
 
 <div class="wrapper">
-    <ul class="bread-crambs">
-        <li class="bread-crambs__item">
-            <a href="#" class="bread-crambs__link">Главная </a>
-        </li>
-
-        <li class="bread-crambs__item">
-            Гарантии
-        </li>
-    </ul>
+    <div class="wrapper">
+        <?php if( function_exists('kama_breadcrumbs') ) kama_breadcrumbs('  '); ?>
+    </div>
 </div>
 
 <section class="main-slider-block">

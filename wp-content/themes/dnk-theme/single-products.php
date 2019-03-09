@@ -31,16 +31,9 @@ if ( function_exists( 'pll_current_language' ) ) {
 <div class="overlay js-overlay"></div>
 
 <div class="wrapper">
-    <ul class="bread-crambs">
-        <li class="bread-crambs__item">
-            <a href="#" class="bread-crambs__link">Главная </a>
-        </li>
-
-        <li class="bread-crambs__item">
-            Каталог
-        </li>
-    </ul>
+    <?php if( function_exists('kama_breadcrumbs') ) kama_breadcrumbs('  '); ?>
 </div>
+
 <section class="main-slider-block">
     <div class="wrapper cataloge-page">
         <div class="main-slider-wrapper">
@@ -52,10 +45,11 @@ if ( function_exists( 'pll_current_language' ) ) {
                 <h3 class="header">
                     <?php echo get_field('model_title'); ?>
                 </h3>
-                <form action="" method="">
+                <form role="search" id="searchform-sp" action="" method="get">
                     <div class="search-form">
                         <div class="search-wrapper">
-                            <input type="search" placeholder="Поиск нужной детали">
+                            <input type="hidden" value="sparepart" name="post_type">
+                            <input type="search" placeholder="Поиск нужной детали" name="sp" id="sp">
                         </div>
                         <div class="submit-wrapper">
                             <input type="submit" value="">
@@ -63,7 +57,19 @@ if ( function_exists( 'pll_current_language' ) ) {
                     </div>
                 </form>
 
+                <?php $search_query = $_GET["sp"]; ?>
+
                 <?php $parts = get_field('model_spareparts'); ?>
+
+                <?php
+                if ( $search_query && $parts ) :
+                    $parts = array_filter( $parts, function ($part) use ($search_query) {
+                        if (mb_stripos($part->post_title, $search_query) !== false) {
+                            return true;
+                        }
+                    });
+                endif;
+                ?>
 
                 <?php if ( !empty($parts) ) : ?>
                     <?php $categories; ?>
@@ -96,13 +102,6 @@ if ( function_exists( 'pll_current_language' ) ) {
                                         <li class="card-list__item">
                                             <?php if ( !empty($category_i['ids']) ) : ?>
                                                 <?php foreach ( $category_i['ids'] as $id ) : ?>
-                                                    <?php /*$sparepart_image = get_field('sparepart_image', $id); */?><!--
-                                                    <?php /*echo $sparepart_image['sizes']['sparepart-featured-image'] . '<br>'; */?>
-                                                    <?php /*echo get_the_title($id) . '<br>'; */?>
-                                                    <?php /*echo get_field('sparepart_price', $id) . '<br>'; */?>
-                                                    <?php /*echo get_field('sparepart_qty', $id) . '<br>'; */?>
-                                                    --><?php /*echo get_permalink($id) . '<br>'; */?>
-
                                                     <a href="<?php echo get_permalink($id); ?>" class="card-list__link">
                                                         <?php $sparepart_image = get_field('sparepart_image', $id); ?>
                                                         <?php $sparepart_image_url = $sparepart_image['sizes']['sparepart-featured-image']; ?>
@@ -138,6 +137,10 @@ if ( function_exists( 'pll_current_language' ) ) {
                             </div>
                         </div>
                     <?php endforeach; ?>
+                <?php elseif( $search_query ): ?>
+                    <p class="just-text">По вашему запросу запчастей не найдено</p>
+                <?php else: ?>
+                    <p class="just-text">Для данной модели нет запчастей</p>
                 <?php endif; ?>
 
                 <p class="just-text">
