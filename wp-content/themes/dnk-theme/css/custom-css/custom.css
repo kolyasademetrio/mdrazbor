@@ -125,3 +125,9 @@ div.wpcf7-mail-sent-ok {
 input[type="search"] {
     color: #fff;
 }
+
+.search-form.show {
+    bottom: -40px;
+    opacity: 1;
+    z-index: 10;
+}

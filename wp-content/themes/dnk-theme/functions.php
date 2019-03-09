@@ -613,7 +613,7 @@ class Kama_Breadcrumbs
         'home' => 'Главная',
         'paged' => 'Страница %d',
         '_404' => 'Ошибка 404',
-        'search' => 'Результаты поиска по запросу - <b>%s</b>',
+        'search' => 'Результаты поиска по запросу - &nbsp;<b>%s</b>',
         'author' => 'Архив автора: <b>%s</b>',
         'year' => 'Архив за <b>%d</b> год',
         'month' => 'Архив за: <b>%s</b>',
@@ -1148,19 +1148,21 @@ function custom_posts_per_page( $query ) {
     if ( $query->is_archive('models') ) {
         set_query_var('posts_per_page', 9);
     }
+
+    if ($query->is_search) {
+        set_query_var('posts_per_page', 9);
+    }
 }
 add_action( 'pre_get_posts', 'custom_posts_per_page' );
 /* Добавление пагинации для страницы ахива Моделей End */
 
-
-/*add_filter( 'search_template', function ( $template ) {
-    if ( is_post_type_archive('products') && is_search() ) {
-        $find_template = locate_template( ['archive-products.php'] );
-
-        if ( '' !== $find_template ) {
-            $template = $find_template;
-        }
+/* Rewrite Search Result URL */
+/*function search_url_rewrite_rule() {
+    if ( is_search() && !empty($_GET['s'])) {
+        wp_redirect(home_url("/search/") . urlencode(get_query_var('s')));
+        exit();
     }
+}
+add_action('template_redirect', 'search_url_rewrite_rule');*/
+/* Rewrite Search Result URL End */
 
-    return $template;
-});*/

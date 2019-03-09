@@ -34,20 +34,22 @@ if ( function_exists( 'pll_current_language' ) ) {
                     <?php echo $subtitle; ?>
                 </p>
 
-                <form role="search" id="searchform-ss" action="<? echo $_SERVER['REQUEST_URI']?>" method="get">
+                <!--<form role="search" id="searchform-ss" action="<?/* echo $_SERVER['REQUEST_URI']*/?>" method="get">
                     <div class="search-form">
                         <div class="search-wrapper">
                             <input type="hidden" value="product" name="post_type">
-                            <input type="search" placeholder="Поиск модели автомобиля по названию или году выпуска" name="sss" id="ss" value="<?php echo get_search_query(); ?>">
+                            <input type="search" placeholder="Поиск модели автомобиля по названию или году выпуска" name="s" id="s" value="<?php /*echo get_search_query(); */?>">
                         </div>
                         <div class="submit-wrapper">
                             <input type="submit" value="">
                         </div>
                     </div>
-                </form>
+                </form>-->
+
+                <?php get_search_form(); ?>
 
                 <?php
-                $search_gets = $_GET["sss"];
+                $search_gets = $_GET["s"];
 
                 if ( get_query_var('paged') ) {
                     $paged = get_query_var('paged');
@@ -61,7 +63,7 @@ if ( function_exists( 'pll_current_language' ) ) {
                     'post_type' => 'products',
                     'posts_per_page' => 9,
                     'paged' => $paged,
-                    's' =>$search_gets
+                    's' =>$search_gets,
                 );
                 $models_archive_query  = new WP_Query( $args );
 

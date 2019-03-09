@@ -112,9 +112,10 @@ if ( function_exists( 'pll_current_language' ) ) {
                         </li>
                     </div>
                     <div class="search-form search-form-header">
-                        <form>
+                        <form role="search" id="searchform-header" action="<?php echo home_url( '/' ); ?>" method="get">
                             <div class="search-wrapper">
-                                <input type="search" placeholder="Что ищем? ()">
+                                <input type="hidden" value="product" name="post_type">
+                                <input type="search" placeholder="Что ищем? ()" name="s">
                             </div>
                             <div class="submit-wrapper">
                                 <input type="submit" value="">
