@@ -755,6 +755,10 @@ class Kama_Breadcrumbs
         else {
             $term = $q_obj; // таксономии
 
+            /*echo '<pre>';
+            var_dump($term);
+            echo '</pre>';*/
+
             // определяем термин для записей (включая вложения attachments)
             if (is_singular()) {
                 // изменим $post, чтобы определить термин родителя вложения
@@ -884,9 +888,9 @@ class Kama_Breadcrumbs
                     $home_after = $pt_title;
                 } // singular, paged post_type_archive, tax
                 else {
-                    /*$home_after = sprintf($linkpatt, get_post_type_archive_link($ptype->name), $pt_title);
+                    $home_after = sprintf($linkpatt, get_post_type_archive_link($ptype->name), $pt_title);
 
-                    $home_after .= (($paged_num && !is_tax()) ? $pg_end : $sep); // пагинация*/
+                    $home_after .= (($paged_num && !is_tax()) ? $pg_end : $sep); // пагинация
                 }
             }
         }
