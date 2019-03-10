@@ -11,7 +11,6 @@ if ( function_exists( 'pll_current_language' ) ) {
 <section class="main-slider-block">
     <div class="wrapper">
         <div class="main-slider-wrapper">
-
             <?php get_template_part( 'templates/custom','sidebar'); ?>
 
             <div class="main-slider-outer">
@@ -34,23 +33,9 @@ if ( function_exists( 'pll_current_language' ) ) {
 <!-- main-cataloge-wrapper -->
 <section class="main-cataloge-wrapper">
     <div class="wrapper">
-        <!--<form role="search" id="searchform-ss" action="<?php /*echo home_url( '/' ); */?>" method="get">
-            <div class="search-form">
-                <div class="search-wrapper">
-                    <input type="hidden" value="product" name="post_type">
-                    <input type="search" placeholder="Поиск модели автомобиля по названию или году выпуска" name="s" id="s" value="<?php /*echo get_search_query(); */?>">
-                </div>
-                <div class="submit-wrapper">
-                    <input type="submit" value="">
-                </div>
-            </div>
-        </form>
--->
         <?php get_search_form(); ?>
 
-
         <?php
-
         $search_get = $_GET["s"];
 
         if ( get_query_var('paged') ) {
@@ -69,51 +54,13 @@ if ( function_exists( 'pll_current_language' ) ) {
         );
 
         $models_home_query  = new WP_Query( $args );
-
-        /*$temp_query = $wp_query;
-        $wp_query   = NULL;
-        $wp_query   = $models_home_query;*/
-
         if ( $models_home_query ->have_posts() ) {
             ?>
             <div class="main-cataloge ">
-                <?php
-                while ( $models_home_query->have_posts() ) {
+                <?php while ( $models_home_query->have_posts() ) {
                     $models_home_query->the_post();
-                    ?>
-                    <a href="<?php echo $url = get_post_permalink(get_the_ID()); ?>" class="cataloge-item">
-                        <div class="cataloge-item__img" style="background: url(<?php echo get_field('model_img', get_the_ID()); ?>) no-repeat 50% 50%;">
-                        </div>
-                        <div class="cataloge-item__name">
-                            <?php the_title(); ?>
-                        </div>
-                        <div class="cataloge-item__age">
-                            <?php $categories = wp_get_post_categories(get_the_ID(), array('fields' => 'names')); ?>
-                            <?php if ( !empty($categories) ) : ?>
-                                <?php
-                                $result = array();
-                                foreach ( $categories as $category ) {
-                                    $result[] = '<span>'.$category .'</span> г.';
-                                }
-                                $result = implode( ', ', $result );
-                                echo $result;
-                                ?>
-                            <?php endif; ?>
-                        </div>
-                        <?php
-                        $parts = get_field('model_spareparts');
-                        $parts_count = $parts ? count($parts) : 0;
-                        $parts_summ = 0;
-                        if ( $parts_count ) :
-                            foreach($parts as $part):
-                                $this_part_count = get_field('sparepart_qty', $part->ID);
-                                $parts_summ += $this_part_count;
-                            endforeach;
-                        endif;
-                        ?>
-                        <div class="cataloge-item__parts">в наличии <span><?php echo $parts_summ; ?></span> з/ч</div>
-                    </a>
-                    <?php
+
+                    get_template_part( 'templates/custom','model-single-item');
                 }
                 ?>
             </div>
@@ -121,7 +68,6 @@ if ( function_exists( 'pll_current_language' ) ) {
         }
         wp_reset_postdata();
         ?>
-
 
         <div class="nav-links">
             <?php
@@ -142,7 +88,6 @@ if ( function_exists( 'pll_current_language' ) ) {
             ) );
             ?>
         </div>
-
 
     </div>
 </section>

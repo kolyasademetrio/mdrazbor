@@ -15,33 +15,7 @@ if ( function_exists( 'pll_current_language' ) ) {
 
 <section class="main-slider-block">
     <div class="wrapper">
-
         <div class="main-slider-wrapper">
-            <!--<aside class="left-menu">
-                <ul class="left-menu-list ">
-                    <li class="left-menu-list__item">
-                        <select class="styled">
-                            <option>Выберите марку</option>
-                            <option>Выберите деталь</option>
-                        </select>
-                    </li>
-
-                    <li class="left-menu-list__item">
-                        <select class="styled">
-                            <option>Алматы</option>
-                            <option>Еще что-то</option>
-                        </select>
-                    </li>
-                </ul>
-
-                <a href="" class="btn blue__btn">
-                    <div class="btn__inner">перейти к каталогу</div>
-                </a>
-
-                <?php /*$form_1 = get_field('form_1', 'option') */?>
-                <?php /*echo do_shortcode( $form_1 ) */?>
-            </aside>-->
-
             <?php get_template_part( 'templates/custom','sidebar'); ?>
 
             <div class="right-wrapper">
@@ -76,18 +50,10 @@ if ( function_exists( 'pll_current_language' ) ) {
                         <?php endforeach; ?>
                     <?php endif; ?>
                 </ul>
-
                 <div id="map"></div>
             </div>
         </div>
-
     </div>
-
 </section>
-
-
-
-
-
 
 <?php get_footer(); ?>

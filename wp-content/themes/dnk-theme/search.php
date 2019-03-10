@@ -30,18 +30,6 @@ if ( function_exists( 'pll_current_language' ) ) {
                     <?php echo $subtitle; ?>
                 </p>
 
-                <!--<form role="search" id="searchform-ss" action="<?/* echo $_SERVER['REQUEST_URI']*/?>" method="get">
-                    <div class="search-form">
-                        <div class="search-wrapper">
-                            <input type="hidden" value="product" name="post_type">
-                            <input type="search" placeholder="Поиск модели автомобиля по названию или году выпуска" name="sss" id="ss" value="<?php /*echo get_search_query(); */?>">
-                        </div>
-                        <div class="submit-wrapper">
-                            <input type="submit" value="">
-                        </div>
-                    </div>
-                </form>-->
-
                 <?php get_search_form(); ?>
 
                 <?php
@@ -66,43 +54,10 @@ if ( function_exists( 'pll_current_language' ) ) {
                 if ( $models_archive_query ->have_posts() ) {
                     ?>
                     <div class="main-cataloge ">
-                        <?php
-                        while ( $models_archive_query->have_posts() ) {
+                        <?php while ( $models_archive_query->have_posts() ) {
                             $models_archive_query->the_post();
-                            ?>
-                            <a href="<?php echo $url = get_post_permalink(get_the_ID()); ?>" class="cataloge-item">
-                                <div class="cataloge-item__img" style="background: url(<?php echo get_field('model_img', get_the_ID()); ?>) no-repeat 50% 50%;">
-                                </div>
-                                <div class="cataloge-item__name">
-                                    <?php the_title(); ?>
-                                </div>
-                                <div class="cataloge-item__age">
-                                    <?php $categories = wp_get_post_categories(get_the_ID(), array('fields' => 'names')); ?>
-                                    <?php if ( !empty($categories) ) : ?>
-                                        <?php
-                                        $result = array();
-                                        foreach ( $categories as $category ) {
-                                            $result[] = '<span>'.$category .'</span> г.';
-                                        }
-                                        $result = implode( ', ', $result );
-                                        echo $result;
-                                        ?>
-                                    <?php endif; ?>
-                                </div>
-                                <?php
-                                $parts = get_field('model_spareparts');
-                                $parts_count = $parts ? count($parts) : 0;
-                                $parts_summ = 0;
-                                if ( $parts_count ) :
-                                    foreach($parts as $part):
-                                        $this_part_count = get_field('sparepart_qty', $part->ID);
-                                        $parts_summ += $this_part_count;
-                                    endforeach;
-                                endif;
-                                ?>
-                                <div class="cataloge-item__parts">в наличии <span><?php echo $parts_summ; ?></span> з/ч</div>
-                            </a>
-                            <?php
+
+                            get_template_part( 'templates/custom','model-single-item');
                         }
                         ?>
                     </div>
@@ -134,17 +89,6 @@ if ( function_exists( 'pll_current_language' ) ) {
                     ) );
                     ?>
                 </div>
-
-                <?php
-                // Previous/next page navigation.
-                /*the_posts_pagination( array(
-                    'prev_text'          => __( 'Previous page', 'twentyfifteen' ),
-                    'next_text'          => __( 'Next page', 'twentyfifteen' ),
-                    'before_page_number' => '<span class="meta-nav screen-reader-text">' . __( 'Page', 'twentyfifteen' ) . ' </span>',
-                ) );*/
-                ?>
-
-
 
                 <div class="main-text-wrapper">
                     <?php echo $catalog_content; ?>

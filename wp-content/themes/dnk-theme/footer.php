@@ -23,7 +23,6 @@ if ( function_exists( 'pll_current_language' ) ) {
     <div class="wrapper">
         <div class="footer-wrapper_top">
             <div class="footer-wrapper">
-
                 <?php if ( is_front_page() ) : ?>
                     <div class="footer-logo">
                         <img src="<?php bloginfo('template_url'); ?>/img/footer-logo.png" alt="">
@@ -34,10 +33,7 @@ if ( function_exists( 'pll_current_language' ) ) {
                     </a>
                 <?php endif; ?>
 
-
-
                 <div class="footer-nav">
-
                     <?php $menu_name = 'footer_menu_'. $locale; ?>
                     <?php
                     wp_nav_menu( array(

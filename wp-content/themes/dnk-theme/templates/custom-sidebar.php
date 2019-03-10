@@ -8,7 +8,6 @@
                     'paged' => get_query_var('paged') ?: 1,
                 );
                 $wp_query_s  = new WP_Query( $args_s );
-
                 if ( $wp_query_s ->have_posts() ) {
                     ?>
                     <select class="styled">
@@ -28,9 +27,7 @@
                 }
                 wp_reset_postdata();
             ?>
-
         </li>
-
         <li class="left-menu-list__item">
             <select class="styled">
                 <option>Алматы</option>
@@ -38,11 +35,9 @@
             </select>
         </li>
     </ul>
-
     <a href="" class="btn blue__btn pass-to-model">
         <div class="btn__inner">перейти к каталогу</div>
     </a>
-
     <?php $form_1 = get_field('form_1', 'option') ?>
     <?php echo do_shortcode( $form_1 ) ?>
 </aside>

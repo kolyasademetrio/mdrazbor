@@ -16,7 +16,6 @@ if ( function_exists( 'pll_current_language' ) ) {
 <section class="main-slider-block">
     <div class="wrapper">
         <div class="main-slider-wrapper">
-
             <?php get_template_part( 'templates/custom','sidebar'); ?>
 
             <div class="right-wrapper">
@@ -52,30 +51,17 @@ if ( function_exists( 'pll_current_language' ) ) {
                         <?php endforeach; ?>
                     <?php endif; ?>
                 </div>
-
                 <?php
                 $page_object = get_queried_object();
                 $page_id     = get_queried_object_id();
                 $post_object = get_post( $post_id );
                 ?>
-
                 <div class="main-text-wrapper">
                     <?php echo $post_object->post_content; ?>
                 </div>
             </div>
         </div>
-
     </div>
 </section>
-
-
-
-
-
-
-
-
-
-
 
 <?php get_footer(); ?>

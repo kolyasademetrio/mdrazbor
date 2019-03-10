@@ -37,11 +37,9 @@ if ( function_exists( 'pll_current_language' ) ) {
 <section class="main-slider-block">
     <div class="wrapper cataloge-page">
         <div class="main-slider-wrapper">
-
             <?php get_template_part( 'templates/custom','sidebar'); ?>
 
             <div class="right-wrapper">
-
                 <h3 class="header">
                     <?php echo get_field('model_title'); ?>
                 </h3>
@@ -56,11 +54,8 @@ if ( function_exists( 'pll_current_language' ) ) {
                         </div>
                     </div>
                 </form>
-
                 <?php $search_query = $_GET["sp"]; ?>
-
                 <?php $parts = get_field('model_spareparts'); ?>
-
                 <?php
                 if ( $search_query && $parts ) :
                     $parts = array_filter( $parts, function ($part) use ($search_query) {
@@ -95,7 +90,6 @@ if ( function_exists( 'pll_current_language' ) ) {
                                 ?>
                                 <?php echo $category_i['cat_name'] . '(' . $qty_summ . ')'; ?>
                             </div>
-
                             <div class="answer-hidden">
                                 <div class="card-list-wrapper">
                                     <ul class="card-list-parts">
@@ -151,12 +145,8 @@ if ( function_exists( 'pll_current_language' ) ) {
                 </p>
             </div>
         </div>
-
     </div>
-
 </section>
-
-
 
 <section class="leave-order">
     <div class="wrapper">
@@ -164,8 +154,5 @@ if ( function_exists( 'pll_current_language' ) ) {
         <?php echo do_shortcode( $form_model ) ?>
     </div>
 </section>
-
-
-
 
 <?php get_footer(); ?>
