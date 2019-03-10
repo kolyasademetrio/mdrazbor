@@ -8,9 +8,7 @@ if ( function_exists( 'pll_current_language' ) ) {
 ?>
 
 <div class="wrapper">
-    <div class="wrapper">
-        <?php if( function_exists('kama_breadcrumbs') ) kama_breadcrumbs('  '); ?>
-    </div>
+    <?php if( function_exists('kama_breadcrumbs') ) kama_breadcrumbs('  '); ?>
 </div>
 
 <section class="main-slider-block">
